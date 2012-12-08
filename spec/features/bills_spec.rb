@@ -4,7 +4,7 @@ describe "Bills" do
   describe "GET /bills" do
     it "displays bills" do
       visit bills_path
-      response.status.should be(200)
+      page.should have_content('Bills')
     end
   end
 end
