@@ -11,7 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208143603) do
+ActiveRecord::Schema.define(:version => 20121208151316) do
+
+  create_table "bills", :force => true do |t|
+    t.string   "name"
+    t.date     "period_start"
+    t.date     "period_stop"
+    t.string   "consumption_unit"
+    t.string   "time_unit"
+    t.integer  "author_id",        :null => false
+    t.integer  "checker_id",       :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "bills", ["author_id"], :name => "index_bills_on_author_id"
+  add_index "bills", ["checker_id"], :name => "index_bills_on_checker_id"
+
+  create_table "consumptions", :force => true do |t|
+    t.integer  "sequence_number"
+    t.float    "value"
+    t.integer  "bill_id",         :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "consumptions", ["bill_id"], :name => "index_consumptions_on_bill_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
