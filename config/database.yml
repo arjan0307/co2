@@ -14,11 +14,10 @@
 #
 development:
   adapter: postgresql
-  encoding: unicode
+  encoding: utf8
   database: co2_development
   pool: 5
-  username: co2
-  password:
+  username: arjan
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -43,13 +42,4 @@ test:
   encoding: unicode
   database: co2_test
   pool: 5
-  username: co2
-  password:
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: co2_production
-  pool: 5
-  username: co2
-  password:
+  username: arjan
