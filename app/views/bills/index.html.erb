@@ -19,7 +19,7 @@
   </thead>
   <tbody>
     <% @bills.each do |bill| %>
-      <tr>
+      <tr class="<%= 'success' unless bill.checker.nil? %>">
         <td><%= link_to bill.id, bill_path(bill) %></td>
         <td><%= bill.name %></td>
         <td><%= bill.period_start %></td>

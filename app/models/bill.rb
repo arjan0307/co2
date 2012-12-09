@@ -7,6 +7,8 @@ class Bill < ActiveRecord::Base
 
   belongs_to :author, :class_name => 'User'
 
+  belongs_to :checker, :class_name => 'User'
+
   @@time_units = {'Days' => 'D', 'Weeks' => 'W', 'Months' => 'M', 'Years' => 'Y'}
 
   def self.time_units

@@ -5,7 +5,7 @@ class BillsController < ApplicationController
   authorize_resource
 
   def index
-    @bills = Bill.all
+    @bills = Bill.order('checker_id DESC, created_at ASC')
     respond_with @bills
   end
 
@@ -44,6 +44,23 @@ class BillsController < ApplicationController
         format.html { redirect_to bills_path }
       else
         format.html { render action: "new_consumptions" }
+      end
+    end
+  end
+
+  def check_consumptions
+    @bill = Bill.find(params[:id])
+    params[:bill][:consumption_ids].pop
+    puts params[:bill][:consumption_ids].inspect
+    respond_with(@bill) do |format|
+      if(@bill.consumption_ids == params[:bill][:consumption_ids].map{|x| x.to_i})
+        @bill.checker = current_user
+        @bill.save
+        flash[:notice] = "Bill succesfully checked"
+        format.html { redirect_to bills_path }
+      else
+        flash[:error] = "All consumptions must be checked in order to check the bill"
+        format.html { render action: 'show' }
       end
     end
   end

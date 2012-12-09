@@ -4,6 +4,7 @@ Co2::Application.routes.draw do
   resources :bills do
     get :new_consumptions, :on => :member, :action => :new_consumptions
     post :create_consumptions, :on => :member, :action => :create_consumptions
+    post :check_consumptions, :on => :member
   end
 
   root :to => 'welcome#index'
