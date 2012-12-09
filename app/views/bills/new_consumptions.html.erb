@@ -1,0 +1,13 @@
+<%= simple_form_for @bill, :url => create_consumptions_bill_path, :method => :post, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.simple_fields_for :consumptions do |builder| %>
+    <%= builder.input :value, :label => "#{@bill.singularized_time_unit} #{builder.object.sequence_number}", :wrapper => :append do %>
+      <%= builder.input_field :value %><span class="add-on"><%= @bill.consumption_unit %></span>
+    <% end %>
+    <%= builder.input :sequence_number, :as => :hidden %>
+  <% end %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                bills_path, :class => 'btn' %>
+  </div>
+<% end %>

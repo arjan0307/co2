@@ -1,7 +1,10 @@
 Co2::Application.routes.draw do
   devise_for :users
 
-  resources :bills
+  resources :bills do
+    get :new_consumptions, :on => :member, :action => :new_consumptions
+    post :create_consumptions, :on => :member, :action => :create_consumptions
+  end
 
   root :to => 'welcome#index'
 

@@ -7,7 +7,7 @@ class Ability
 
     can :read, Bill if ['manager', 'secretary'].include?(user.role)
 
-    can [:new, :create], Bill if user.role == 'secretary'
+    can [:new, :create, :new_consumptions, :create_consumptions], Bill if user.role == 'secretary'
 
     # Define abilities for the passed in user here. For example:
     #
