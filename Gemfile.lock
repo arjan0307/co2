@@ -129,6 +129,8 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (10.0.2)
+    rb-inotify (0.8.8)
+      ffi (>= 0.5.0)
     rdoc (3.12)
       json (~> 1.4)
     ref (1.0.2)
@@ -202,6 +204,7 @@ DEPENDENCIES
   less-rails
   pg
   rails (= 3.2.9)
+  rb-inotify (~> 0.8.8)
   rspec-rails
   sass-rails (~> 3.2.3)
   simple_form

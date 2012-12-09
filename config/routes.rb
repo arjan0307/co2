@@ -3,6 +3,8 @@ Co2::Application.routes.draw do
 
   resources :bills
 
+  root :to => 'welcome#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
