@@ -24,7 +24,7 @@ class BillsController < ApplicationController
     if @bill.save
       flash[:notice] = "Bill succesfully added"
     end
-    respond_with(@bill, :location => bills_url)
+    respond_with(@bill, :location => new_consumptions_bill_url(@bill))
   end
 
   def new_consumptions

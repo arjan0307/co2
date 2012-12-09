@@ -15,6 +15,7 @@ class Bill < ActiveRecord::Base
 
   validates_presence_of :name, :period_start, :period_stop, :consumption_unit, :time_unit
   validates_inclusion_of :time_unit, :in => @@time_units.values
+  validates_datetime :period_stop, :after => :period_start, :after_message => 'Must be after Period start'
 
   def num_intervals
     case time_unit
