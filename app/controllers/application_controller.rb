@@ -4,7 +4,12 @@ class ApplicationController < ActionController::Base
   check_authorization :unless => :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    if user_signed_in?
+      redirect_to root_url, :alert => exception.message
+    else
+      authenticate_user!
+    end
   end
+
 
 end

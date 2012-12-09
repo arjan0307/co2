@@ -5,7 +5,9 @@ class Ability
 
     user ||= User.new
 
-    can :read, Bill if user.role == 'manager'
+    can :read, Bill if ['manager', 'secretary'].include?(user.role)
+
+    can [:new, :create], Bill if user.role == 'secretary'
 
     # Define abilities for the passed in user here. For example:
     #

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208151316) do
+ActiveRecord::Schema.define(:version => 20121209154018) do
 
   create_table "bills", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20121208151316) do
     t.string   "consumption_unit"
     t.string   "time_unit"
     t.integer  "author_id",        :null => false
-    t.integer  "checker_id",       :null => false
+    t.integer  "checker_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end

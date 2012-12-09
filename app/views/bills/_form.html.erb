@@ -1,11 +1,9 @@
 <%= simple_form_for @bill, :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.input :name %>
-  <%= f.input :period_start %>
-  <%= f.input :period_stop %>
+  <%= f.input :period_start, :as => :date , :order => [:month, :year], :discard_day => true %>
+  <%= f.input :period_stop, :as => :date , :order => [:month, :year], :discard_day => true %>
   <%= f.input :consumption_unit %>
-  <%= f.input :time_unit %>
-  <%= f.input :author_id %>
-  <%= f.input :checker_id %>
+  <%= f.input :time_unit, :as => :radio, :collection => Bill.time_units %>
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
