@@ -26,14 +26,15 @@ FactoryGirl.define do
     period_stop Date.today.next_month.end_of_month
     consumption_unit 'kWh'
     time_unit 'M'
+    author
 
     factory :bill_with_consumptions do
       ignore do
-        posts_count 2
+        bills_count 2
       end
 
       after(:create) do |bill, evaluator|
-        FactoryGirl.create_list(:consumption, evaluator.posts_count, :bill => bill)
+        FactoryGirl.create_list(:consumption, evaluator.bills_count, :bill => bill)
       end
     end
   end
