@@ -7,7 +7,7 @@ class BillsController < ApplicationController
 
 
   def index
-    @bills = Bill.order('checker_id DESC, created_at ASC')
+    @bills = Bill.order('checker_id DESC, created_at ASC').includes(:consumptions)
     respond_with @bills
   end
 
