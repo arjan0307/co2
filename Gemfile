@@ -30,6 +30,7 @@ group :test do
   gem 'guard-rspec'
 end
 
+gem "libv8", "~> 3.11.8"
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"

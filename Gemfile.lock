@@ -86,6 +86,7 @@ GEM
     less-rails (2.2.6)
       actionpack (>= 3.1)
       less (~> 2.2.0)
+    libv8 (3.11.8.4)
     libwebsocket (0.1.7.1)
       addressable
       websocket
@@ -205,6 +206,7 @@ DEPENDENCIES
   guard-rspec
   jquery-rails
   less-rails
+  libv8 (~> 3.11.8)
   pg
   rails (= 3.2.9)
   rb-inotify (~> 0.8.8)
