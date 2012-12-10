@@ -7,30 +7,29 @@
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @bill.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:period_start) %>:</strong></dt>
-  <dd><%= @bill.period_start %></dd>
+  <dd><%= @bill.period_start.to_formatted_s(:month_and_year) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:period_stop) %>:</strong></dt>
-  <dd><%= @bill.period_stop %></dd>
+  <dd><%= @bill.period_stop.to_formatted_s(:month_and_year) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:consumption_unit) %>:</strong></dt>
   <dd><%= @bill.consumption_unit %></dd>
   <dt><strong><%= model_class.human_attribute_name(:time_unit) %>:</strong></dt>
-  <dd><%= @bill.time_unit %></dd>
+  <dd><%= Bill.time_units.invert[@bill.time_unit] %></dd>
   <dt><strong><%= model_class.human_attribute_name(:author_id) %>:</strong></dt>
-  <dd><%= @bill.author_id %></dd>
+  <dd><%= @bill.author.email %></dd>
   <dt><strong><%= model_class.human_attribute_name(:checker_id) %>:</strong></dt>
-  <dd><%= @bill.checker_id %></dd>
+  <dd><%= @bill.checker.nil? ? 'Not checked' : @bill.checker.email %></dd>
 </dl>
 
 <% if can? :check_consumptions, @bill %>
   <%= simple_form_for @bill, :method => :post, :html => {:class => 'form-horizontal'}, :url => check_consumptions_bill_path, :method => :post do |f| %>
-    <%= f.input :consumption_ids, :collection => @bill.consumptions, :as => :check_boxes, :checked => (params[:bill].nil? ? false : params[:bill][:consumption_ids]), :label_method => :interval_value, :include_blank => false %>
+    <%= f.input :consumption_ids, :collection => @bill.consumptions, :as => :check_boxes, :checked => (params[:bill].nil? ? false : params[:bill][:consumption_ids]), :label_method => :interval_value, :include_blank => false, :label => 'Consumptions' %>
     <div class="form-actions">
       <%= f.button :submit, :class => 'btn-primary', :value => 'Check bill' %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-        bills_path, :class => 'btn' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")), bills_path, :class => 'btn' %>
     </div>
   <% end %>
-<% else %>
-  <h2>Consumptions</h2>
+<% elsif !@bill.consumption_ids.empty? %>
+  <h4>Consumptions</h4>
   <table class="table table-striped">
     <th>Date interval</th>
     <th>Value</th>
@@ -41,16 +40,12 @@
       </tr>
     <% end %>
   </table>
+<% else %>
+  <p class="text-warning">Consumptions have not been added yet.</p>
 <% end %>
 
 <div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              bills_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_bill_path(@bill), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              bill_path(@bill),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+  <%= link_to t('.back', :default => t("helpers.links.back")), bills_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_bill_path(@bill), :class => 'btn' if can?(:edit, @bill) %>
+  <%= link_to 'Consumptions', new_consumptions_bill_path(@bill), :class => 'btn' if can?(:new_consumptions, @bill) %>
 </div>

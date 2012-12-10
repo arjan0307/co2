@@ -11,7 +11,11 @@ class Ability
 
     can [:edit, :update, :new_consumptions, :create_consumptions], Bill, :author_id => user.id, :checker_id => nil
 
-    can [:check_consumptions], Bill, :checker_id => nil if user.role == 'manager'
+    if user.role == 'manager'
+      can [:check_consumptions], Bill do |bill|
+        bill.checker_id == nil && !bill.consumption_ids.empty?
+      end
+    end
 
     # Define abilities for the passed in user here. For example:
     #

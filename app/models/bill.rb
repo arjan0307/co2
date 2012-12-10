@@ -24,7 +24,7 @@ class Bill < ActiveRecord::Base
   def num_intervals
     case time_unit
     when 'D'
-      (period_stop - period_start).to_i
+      ((period_stop + 1) - period_start).to_i
     when 'W'
       ((period_stop - period_start) / 7).ceil.to_i
     when 'M'

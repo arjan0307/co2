@@ -19,30 +19,23 @@
   </thead>
   <tbody>
     <% @bills.each do |bill| %>
-      <tr class="<%= 'success' unless bill.checker.nil? %>">
+      <tr class="<%= (bill.consumption_ids.empty? ? 'warning' : (!bill.checker_id.nil? ? 'success' : ''))  %>">
         <td><%= link_to bill.id, bill_path(bill) %></td>
         <td><%= bill.name %></td>
-        <td><%= bill.period_start %></td>
-        <td><%= bill.period_stop %></td>
+        <td><%= bill.period_start.to_formatted_s(:month_and_year) %></td>
+        <td><%= bill.period_stop.to_formatted_s(:month_and_year) %></td>
         <td><%= bill.consumption_unit %></td>
-        <td><%= bill.time_unit %></td>
-        <td><%= bill.author_id %></td>
-        <td><%= bill.checker_id %></td>
-        <td><%=l bill.created_at %></td>
+        <td><%= Bill.time_units.invert[bill.time_unit] %></td>
+        <td><%= bill.author.email %></td>
+        <td><%= bill.checker.nil? ? 'Not checked' : bill.checker.email %></td>
+        <td><%= bill.created_at.to_formatted_s(:short) %></td>
         <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_bill_path(bill), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      bill_path(bill),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_bill_path(bill), :class => 'btn btn-mini' if can?(:edit, bill) %>
+          <%= link_to('Consumptions', new_consumptions_bill_path(bill), :class => 'btn btn-mini') if can?(:new_consumptions, bill) %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_bill_path,
-            :class => 'btn btn-primary' %>
+<%= link_to t('.new', :default => t("helpers.links.new")), new_bill_path, :class => 'btn btn-primary' if can?(:new, Bill) %>
