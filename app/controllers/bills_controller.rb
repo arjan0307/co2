@@ -52,6 +52,7 @@ class BillsController < ApplicationController
   def create_consumptions
     respond_with(@bill) do |format|
       if @bill.update_attributes(params[:bill])
+        flash[:notice] = 'Successfully stored consumptions'
         format.html { redirect_to bills_path }
       else
         format.html { render action: "new_consumptions" }
