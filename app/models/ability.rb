@@ -9,7 +9,7 @@ class Ability
 
     can [:new, :create], Bill if user.role == 'secretary'
 
-    can [:edit, :update, :new_consumptions, :create_consumptions], Bill, :author_id => user.id, :checker_id => nil
+    can [:edit, :update, :new_consumptions, :create_consumptions], Bill, :author_id => user.id, :checker_id => nil if user.role == "secretary"
 
     if user.role == 'manager'
       can [:check_consumptions], Bill do |bill|

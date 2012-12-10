@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Bills" do
   describe "GET /bills" do
     it "displays bills" do
-      sign_in_as_a_valid_user
+      sign_in_as_a_valid_user(FactoryGirl.create(:secretary)) 
       visit bills_path
       page.should have_content('Bills')
     end
