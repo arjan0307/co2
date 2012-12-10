@@ -20,13 +20,27 @@
   <dd><%= @bill.checker_id %></dd>
 </dl>
 
-<%= simple_form_for @bill, :method => :post, :html => {:class => 'form-horizontal'}, :url => check_consumptions_bill_path, :method => :post do |f| %>
-  <%= f.input :consumption_ids, :collection => @bill.consumptions, :as => :check_boxes, :checked => (params[:bill].nil? ? false : params[:bill][:consumption_ids]), :label_method => :interval_value, :include_blank => false %>
-  <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary', :value => 'Check bill' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                bills_path, :class => 'btn' %>
-  </div>
+<% if can? :check_consumptions, @bill %>
+  <%= simple_form_for @bill, :method => :post, :html => {:class => 'form-horizontal'}, :url => check_consumptions_bill_path, :method => :post do |f| %>
+    <%= f.input :consumption_ids, :collection => @bill.consumptions, :as => :check_boxes, :checked => (params[:bill].nil? ? false : params[:bill][:consumption_ids]), :label_method => :interval_value, :include_blank => false %>
+    <div class="form-actions">
+      <%= f.button :submit, :class => 'btn-primary', :value => 'Check bill' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+        bills_path, :class => 'btn' %>
+    </div>
+  <% end %>
+<% else %>
+  <h2>Consumptions</h2>
+  <table class="table table-striped">
+    <th>Date interval</th>
+    <th>Value</th>
+    <% @bill.consumptions.each do |consumption| %>
+      <tr>
+        <td><%= consumption.interval %></td>
+        <td><%= consumption.value %></td>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
 
 <div class="form-actions">

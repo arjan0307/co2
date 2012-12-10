@@ -2,7 +2,9 @@ class BillsController < ApplicationController
 
   respond_to :html
 
+  before_filter :load_bill, :except => [:index, :create, :new]
   authorize_resource
+
 
   def index
     @bills = Bill.order('checker_id DESC, created_at ASC')
@@ -10,7 +12,6 @@ class BillsController < ApplicationController
   end
 
   def show
-    @bill = Bill.find(params[:id])
   end
 
   def new
@@ -23,12 +24,23 @@ class BillsController < ApplicationController
     @bill.author = current_user 
     if @bill.save
       flash[:notice] = "Bill succesfully added"
+      location = new_consumptions_bill_url(@bill)
     end
-    respond_with(@bill, :location => new_consumptions_bill_url(@bill))
+    respond_with(@bill, :location => location)
+  end
+
+  def edit
+    respond_with(@bill)
+  end
+
+  def update
+    if(@bill.update_attributes(params[:bill]))
+       flash[:notice] = "Successfully edited bill"
+    end
+    respond_with(@bill, :location => bills_url)
   end
 
   def new_consumptions
-    @bill = Bill.find(params[:id])
     if @bill.consumptions.empty?
       1.upto(@bill.num_intervals) do |counter|
         @bill.consumptions.build(:sequence_number => counter)
@@ -38,7 +50,6 @@ class BillsController < ApplicationController
   end
 
   def create_consumptions
-    @bill = Bill.find(params[:id])
     respond_with(@bill) do |format|
       if @bill.update_attributes(params[:bill])
         format.html { redirect_to bills_path }
@@ -49,7 +60,6 @@ class BillsController < ApplicationController
   end
 
   def check_consumptions
-    @bill = Bill.find(params[:id])
     params[:bill][:consumption_ids].pop
     puts params[:bill][:consumption_ids].inspect
     respond_with(@bill) do |format|
@@ -63,5 +73,11 @@ class BillsController < ApplicationController
         format.html { render action: 'show' }
       end
     end
+  end
+
+  private
+
+  def load_bill
+    @bill = Bill.find(params[:id])
   end
 end
